@@ -213,27 +213,11 @@ export default function Balance() {
         ) : transactions?.items && transactions.items.length > 0 ? (
           <div className="space-y-3">
             {transactions.items.map((tx) => {
-              // Determine if this is a credit (positive) or debit (negative) transaction
-              // Credits: DEPOSIT, REFERRAL_REWARD, REFUND, POLL_REWARD
-              // Debits: SUBSCRIPTION_PAYMENT, WITHDRAWAL, everything else
-              const txType = normalizeType(tx.type)
-              const isCredit = txType === 'DEPOSIT' || txType === 'REFERRAL_REWARD' || txType === 'REFUND' || txType === 'POLL_REWARD'
-
-              // If amount is already negative in DB, use it as-is. Otherwise, determine sign by type
-              const isNegativeInDb = tx.amount_rubles < 0
-              let displayAmount = Math.abs(tx.amount_rubles)
-              let sign = ''
-              let colorClass = ''
-
-              if (isNegativeInDb) {
-                // DB has negative value - use it directly
-                sign = '-'
-                colorClass = 'text-error-400'
-              } else {
-                // DB has positive value - determine sign by type
-                sign = isCredit ? '+' : '-'
-                colorClass = isCredit ? 'text-success-400' : 'text-error-400'
-              }
+              // API returns negative values for debits, positive for credits
+              const isPositive = tx.amount_rubles >= 0
+              const displayAmount = Math.abs(tx.amount_rubles)
+              const sign = isPositive ? '+' : '-'
+              const colorClass = isPositive ? 'text-success-400' : 'text-error-400'
 
               return (
               <div
