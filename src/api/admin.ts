@@ -53,6 +53,22 @@ export interface AdminTicketStats {
   closed: number
 }
 
+export interface TicketSettings {
+  sla_enabled: boolean
+  sla_minutes: number
+  sla_check_interval_seconds: number
+  sla_reminder_cooldown_minutes: number
+  support_system_mode: string  // tickets, contact, both
+}
+
+export interface TicketSettingsUpdate {
+  sla_enabled?: boolean
+  sla_minutes?: number
+  sla_check_interval_seconds?: number
+  sla_reminder_cooldown_minutes?: number
+  support_system_mode?: string
+}
+
 export interface AdminTicketListResponse {
   items: AdminTicket[]
   total: number
@@ -106,6 +122,18 @@ export const adminApi = {
   // Update ticket priority
   updateTicketPriority: async (ticketId: number, priority: string): Promise<AdminTicketDetail> => {
     const response = await apiClient.post(`/cabinet/admin/tickets/${ticketId}/priority`, { priority })
+    return response.data
+  },
+
+  // Get ticket settings
+  getTicketSettings: async (): Promise<TicketSettings> => {
+    const response = await apiClient.get('/cabinet/admin/tickets/settings')
+    return response.data
+  },
+
+  // Update ticket settings
+  updateTicketSettings: async (settings: TicketSettingsUpdate): Promise<TicketSettings> => {
+    const response = await apiClient.patch('/cabinet/admin/tickets/settings', settings)
     return response.data
   },
 }
