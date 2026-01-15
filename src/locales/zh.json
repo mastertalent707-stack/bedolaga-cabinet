@@ -1,4 +1,4 @@
-{
+﻿{
   "common": {
     "loading": "加载中...",
     "error": "错误",
@@ -165,7 +165,20 @@
     "currentBalance": "当前余额",
     "topUp": "充值",
     "topUpBalance": "充值余额",
-    "paymentMethods": "支付方式",
+    "paymentMethods": {
+      "yookassa": {
+        "name": "银行卡",
+        "description": "通过银行卡支付"
+      },
+      "cryptobot": {
+        "name": "CryptoBot",
+        "description": "通过CryptoBot加密货币支付"
+      },
+      "telegram_stars": {
+        "name": "Telegram Stars",
+        "description": "通过Telegram Stars支付"
+      }
+    },
     "transactionHistory": "交易记录",
     "noTransactions": "暂无交易",
     "date": "日期",
@@ -199,21 +212,7 @@
       }
     },
     "minAmountError": "最小金额：{{amount}}",
-    "maxAmountError": "最大金额：{{amount}}",
-    "paymentMethods": {
-      "yookassa": {
-        "name": "银行卡",
-        "description": "通过银行卡支付"
-      },
-      "cryptobot": {
-        "name": "CryptoBot",
-        "description": "通过CryptoBot加密货币支付"
-      },
-      "telegram_stars": {
-        "name": "Telegram Stars",
-        "description": "通过Telegram Stars支付"
-      }
-    }
+    "maxAmountError": "最大金额：{{amount}}"
   },
   "referral": {
     "title": "推荐计划",
@@ -242,7 +241,18 @@
     "joined": "加入时间",
     "hasPaid": "已付款",
     "earningsHistory": "收益记录",
-    "reason": "原因"
+    "reason": "原因",
+    "status": {
+      "pending": "待定",
+      "paid": "已支付"
+    },
+    "reasons": {
+      "referral_registration_pending": "推荐用户注册",
+      "referral_registration": "推荐用户注册",
+      "referral_first_payment": "推荐用户首次付款",
+      "referral_subscription_renewal": "推荐用户续订",
+      "referral_bonus": "推荐奖金"
+    }
   },
   "support": {
     "title": "支持",

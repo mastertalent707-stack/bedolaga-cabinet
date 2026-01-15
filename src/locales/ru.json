@@ -303,8 +303,19 @@
     "user": "Пользователь",
     "joined": "Присоединился",
     "hasPaid": "Оплатил",
+    "status": {
+      "pending": "Ожидание",
+      "paid": "Оплачено"
+    },
     "earningsHistory": "История начислений",
-    "reason": "Причина"
+    "reason": "Причина",
+    "reasons": {
+      "referral_registration_pending": "Регистрация реферала",
+      "referral_registration": "Регистрация реферала",
+      "referral_first_payment": "Первая оплата реферала",
+      "referral_subscription_renewal": "Продление подписки реферала",
+      "referral_bonus": "Бонус за реферала"
+    }
   },
   "support": {
     "title": "Поддержка",

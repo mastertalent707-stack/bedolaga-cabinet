@@ -303,8 +303,19 @@
     "user": "User",
     "joined": "Joined",
     "hasPaid": "Has Paid",
+    "status": {
+      "pending": "Pending",
+      "paid": "Paid"
+    },
     "earningsHistory": "Earnings History",
-    "reason": "Reason"
+    "reason": "Reason",
+    "reasons": {
+      "referral_registration_pending": "Referral Registration",
+      "referral_registration": "Referral Registration",
+      "referral_first_payment": "Referral First Payment",
+      "referral_subscription_renewal": "Referral Subscription Renewal",
+      "referral_bonus": "Referral Bonus"
+    }
   },
   "support": {
     "title": "Support",
