@@ -685,6 +685,17 @@
       "available": "Available",
       "withConnections": "With Connections",
       "revenue": "Revenue"
+    },
+    "tariffs": {
+      "title": "Tariff Statistics",
+      "subtitle": "Subscription distribution by tariffs",
+      "tariffName": "Tariff",
+      "activeSubscriptions": "Active",
+      "trialSubscriptions": "Trial",
+      "purchasedToday": "Today",
+      "purchasedWeek": "Week",
+      "purchasedMonth": "Month",
+      "noTariffs": "No tariffs"
     }
   },
   "profile": {

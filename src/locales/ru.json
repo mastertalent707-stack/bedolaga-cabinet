@@ -685,6 +685,17 @@
       "available": "Доступных",
       "withConnections": "С подключениями",
       "revenue": "Доход"
+    },
+    "tariffs": {
+      "title": "Статистика по тарифам",
+      "subtitle": "Распределение подписок по тарифам",
+      "tariffName": "Тариф",
+      "activeSubscriptions": "Активных",
+      "trialSubscriptions": "Триал",
+      "purchasedToday": "Сегодня",
+      "purchasedWeek": "Неделя",
+      "purchasedMonth": "Месяц",
+      "noTariffs": "Нет тарифов"
     }
   },
   "profile": {
