@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { useTranslation } from 'react-i18next'
 import {
   promocodesApi,
   PromoCode,
@@ -479,7 +478,6 @@ function PromoGroupModal({ group, onSave, onClose, isLoading }: PromoGroupModalP
 }
 
 export default function AdminPromocodes() {
-  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   const [activeTab, setActiveTab] = useState<'promocodes' | 'groups'>('promocodes')
