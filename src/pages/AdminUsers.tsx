@@ -60,18 +60,6 @@ const MinusIcon = () => (
   </svg>
 )
 
-const BanIcon = () => (
-  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-  </svg>
-)
-
-const CheckIcon = () => (
-  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-  </svg>
-)
-
 const SyncIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
@@ -133,10 +121,10 @@ function StatusBadge({ status }: { status: string }) {
 interface UserRowProps {
   user: UserListItem
   onSelect: (user: UserListItem) => void
-  formatMoney: (kopeks: number) => string
+  formatAmount: (rubAmount: number) => string
 }
 
-function UserRow({ user, onSelect, formatMoney }: UserRowProps) {
+function UserRow({ user, onSelect, formatAmount }: UserRowProps) {
   return (
     <div
       onClick={() => onSelect(user)}
@@ -169,7 +157,7 @@ function UserRow({ user, onSelect, formatMoney }: UserRowProps) {
 
       {/* Balance */}
       <div className="text-right shrink-0">
-        <div className="font-medium text-dark-100">{formatMoney(user.balance_kopeks)}</div>
+        <div className="font-medium text-dark-100">{formatAmount(user.balance_rubles)}</div>
         <div className="text-xs text-dark-500">
           {user.purchase_count > 0 ? `${user.purchase_count} покупок` : 'Нет покупок'}
         </div>
@@ -189,8 +177,7 @@ interface UserDetailModalProps {
 }
 
 function UserDetailModal({ userId, onClose, onUpdate }: UserDetailModalProps) {
-  const { t } = useTranslation()
-  const { formatMoney } = useCurrency()
+  const { formatWithCurrency } = useCurrency()
   const [user, setUser] = useState<UserDetailResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'info' | 'subscription' | 'balance' | 'sync'>('info')
@@ -457,7 +444,7 @@ function UserDetailModal({ userId, onClose, onUpdate }: UserDetailModalProps) {
                 </div>
                 <div className="p-3 bg-dark-900/50 rounded-xl">
                   <div className="text-xs text-dark-500 mb-1">Всего потрачено</div>
-                  <div className="text-dark-100">{formatMoney(user.total_spent_kopeks)}</div>
+                  <div className="text-dark-100">{formatWithCurrency(user.total_spent_kopeks / 100)}</div>
                 </div>
                 <div className="p-3 bg-dark-900/50 rounded-xl">
                   <div className="text-xs text-dark-500 mb-1">Покупок</div>
@@ -474,7 +461,7 @@ function UserDetailModal({ userId, onClose, onUpdate }: UserDetailModalProps) {
                     <div className="text-xs text-dark-500">Рефералов</div>
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-dark-100">{formatMoney(user.referral.total_earnings_kopeks)}</div>
+                    <div className="text-lg font-bold text-dark-100">{formatWithCurrency(user.referral.total_earnings_kopeks / 100)}</div>
                     <div className="text-xs text-dark-500">Заработано</div>
                   </div>
                   <div>
@@ -622,7 +609,7 @@ function UserDetailModal({ userId, onClose, onUpdate }: UserDetailModalProps) {
               {/* Current balance */}
               <div className="p-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl border border-blue-500/30">
                 <div className="text-sm text-dark-400 mb-1">Текущий баланс</div>
-                <div className="text-3xl font-bold text-dark-100">{formatMoney(user.balance_kopeks)}</div>
+                <div className="text-3xl font-bold text-dark-100">{formatWithCurrency(user.balance_rubles)}</div>
               </div>
 
               {/* Add/subtract form */}
@@ -671,7 +658,7 @@ function UserDetailModal({ userId, onClose, onUpdate }: UserDetailModalProps) {
                           <div className="text-xs text-dark-500">{formatDate(tx.created_at)}</div>
                         </div>
                         <div className={tx.amount_kopeks >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
-                          {tx.amount_kopeks >= 0 ? '+' : ''}{formatMoney(tx.amount_kopeks)}
+                          {tx.amount_kopeks >= 0 ? '+' : ''}{formatWithCurrency(tx.amount_rubles)}
                         </div>
                       </div>
                     ))}
@@ -772,8 +759,7 @@ function UserDetailModal({ userId, onClose, onUpdate }: UserDetailModalProps) {
 // ============ Main Page ============
 
 export default function AdminUsers() {
-  const { t } = useTranslation()
-  const { formatMoney } = useCurrency()
+  const { formatWithCurrency } = useCurrency()
 
   const [users, setUsers] = useState<UserListItem[]>([])
   const [stats, setStats] = useState<UsersStatsResponse | null>(null)
@@ -918,7 +904,7 @@ export default function AdminUsers() {
               key={user.id}
               user={user}
               onSelect={(u) => setSelectedUserId(u.id)}
-              formatMoney={formatMoney}
+              formatAmount={(amount) => formatWithCurrency(amount)}
             />
           ))
         )}
