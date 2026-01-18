@@ -338,7 +338,7 @@ export default function Layout({ children }: LayoutProps) {
               )}
 
               <PromoDiscountBadge />
-              <TicketNotificationBell isAdmin={isAdmin} />
+              <TicketNotificationBell isAdmin={isAdminActive()} />
               <LanguageSwitcher />
 
               {/* Profile - Desktop */}
