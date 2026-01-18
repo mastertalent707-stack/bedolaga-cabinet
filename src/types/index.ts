@@ -537,7 +537,6 @@ export interface UnreadCountResponse {
   unread_count: number
 }
 
-// Extended TicketSettings with cabinet notifications
 export interface TicketSettings {
   sla_enabled: boolean
   sla_minutes: number
