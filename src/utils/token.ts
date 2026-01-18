@@ -149,3 +149,107 @@ export const tokenStorage = {
     }
   },
 }
+
+/**
+ * Централизованный менеджер обновления токенов
+ * Предотвращает множественные параллельные refresh запросы
+ */
+class TokenRefreshManager {
+  private isRefreshing = false
+  private refreshPromise: Promise<string | null> | null = null
+  private subscribers: ((token: string | null) => void)[] = []
+  private refreshEndpoint = '/api/cabinet/auth/refresh'
+
+  setRefreshEndpoint(endpoint: string): void {
+    this.refreshEndpoint = endpoint
+  }
+
+  /**
+   * Обновляет access token используя refresh token
+   * При множественных вызовах возвращает один и тот же Promise
+   */
+  async refreshAccessToken(): Promise<string | null> {
+    // Если уже идёт refresh - возвращаем существующий Promise
+    if (this.isRefreshing && this.refreshPromise) {
+      return this.refreshPromise
+    }
+
+    const refreshToken = tokenStorage.getRefreshToken()
+    if (!refreshToken) {
+      return null
+    }
+
+    this.isRefreshing = true
+    this.refreshPromise = this.doRefresh(refreshToken)
+
+    try {
+      const result = await this.refreshPromise
+      this.notifySubscribers(result)
+      return result
+    } finally {
+      this.isRefreshing = false
+      this.refreshPromise = null
+    }
+  }
+
+  private async doRefresh(refreshToken: string): Promise<string | null> {
+    try {
+      const response = await fetch(this.refreshEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Refresh failed: ${response.status}`)
+      }
+
+      const data = await response.json()
+      const newAccessToken = data.access_token
+
+      if (newAccessToken) {
+        tokenStorage.setAccessToken(newAccessToken)
+        return newAccessToken
+      }
+
+      return null
+    } catch (error) {
+      console.error('[TokenRefreshManager] Refresh failed:', error)
+      return null
+    }
+  }
+
+  /**
+   * Подписка на результат refresh (для ожидающих запросов)
+   */
+  subscribe(callback: (token: string | null) => void): () => void {
+    this.subscribers.push(callback)
+    return () => {
+      this.subscribers = this.subscribers.filter((cb) => cb !== callback)
+    }
+  }
+
+  private notifySubscribers(token: string | null): void {
+    this.subscribers.forEach((cb) => cb(token))
+    this.subscribers = []
+  }
+
+  /**
+   * Проверяет, идёт ли сейчас refresh
+   */
+  get isRefreshInProgress(): boolean {
+    return this.isRefreshing
+  }
+
+  /**
+   * Ожидает завершения текущего refresh (если есть)
+   */
+  async waitForRefresh(): Promise<string | null> {
+    if (this.refreshPromise) {
+      return this.refreshPromise
+    }
+    return tokenStorage.getAccessToken()
+  }
+}
+
+export const tokenRefreshManager = new TokenRefreshManager()
