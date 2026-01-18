@@ -1,5 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios'
-import { tokenStorage, isTokenExpired, tokenRefreshManager } from '../utils/token'
+import { tokenStorage, isTokenExpired, tokenRefreshManager, safeRedirectToLogin } from '../utils/token'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
 
@@ -38,7 +38,7 @@ apiClient.interceptors.request.use(async (config: InternalAxiosRequestConfig) =>
     } else {
       // Refresh не удался - редирект на логин
       tokenStorage.clearTokens()
-      window.location.href = '/login'
+      safeRedirectToLogin()
       return config
     }
   }
@@ -73,7 +73,7 @@ apiClient.interceptors.response.use(
       } else {
         // Refresh не удался
         tokenStorage.clearTokens()
-        window.location.href = '/login'
+        safeRedirectToLogin()
       }
     }
 

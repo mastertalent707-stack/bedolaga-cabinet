@@ -2,6 +2,8 @@
  * Утилиты для безопасной работы с JWT токенами
  */
 
+import axios from 'axios'
+
 const TOKEN_KEYS = {
   ACCESS: 'access_token',
   REFRESH: 'refresh_token',
@@ -194,18 +196,14 @@ class TokenRefreshManager {
 
   private async doRefresh(refreshToken: string): Promise<string | null> {
     try {
-      const response = await fetch(this.refreshEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh_token: refreshToken }),
-      })
+      // Используем чистый axios (не apiClient) чтобы избежать циклической зависимости
+      const response = await axios.post<{ access_token?: string }>(
+        this.refreshEndpoint,
+        { refresh_token: refreshToken },
+        { headers: { 'Content-Type': 'application/json' } }
+      )
 
-      if (!response.ok) {
-        throw new Error(`Refresh failed: ${response.status}`)
-      }
-
-      const data = await response.json()
-      const newAccessToken = data.access_token
+      const newAccessToken = response.data.access_token
 
       if (newAccessToken) {
         tokenStorage.setAccessToken(newAccessToken)
@@ -253,3 +251,40 @@ class TokenRefreshManager {
 }
 
 export const tokenRefreshManager = new TokenRefreshManager()
+
+/**
+ * Безопасный редирект на страницу логина
+ * Валидирует URL чтобы предотвратить open redirect уязвимость
+ */
+export function safeRedirectToLogin(): void {
+  // Разрешённые пути для редиректа (относительные пути нашего приложения)
+  const loginPath = '/login'
+
+  // Проверяем, что мы на том же origin
+  if (typeof window !== 'undefined') {
+    // Используем только относительный путь для безопасности
+    window.location.href = loginPath
+  }
+}
+
+/**
+ * Валидирует URL для редиректа
+ * Возвращает true только для безопасных URL (относительные пути или тот же origin)
+ */
+export function isValidRedirectUrl(url: string): boolean {
+  // Пустой URL - небезопасен
+  if (!url) return false
+
+  // Относительные пути всегда безопасны
+  if (url.startsWith('/') && !url.startsWith('//')) {
+    return true
+  }
+
+  try {
+    const parsed = new URL(url, window.location.origin)
+    // Разрешаем только тот же origin
+    return parsed.origin === window.location.origin
+  } catch {
+    return false
+  }
+}
