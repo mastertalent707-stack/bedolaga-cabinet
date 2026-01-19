@@ -864,6 +864,19 @@ export default function AdminSettings() {
     queryFn: brandingApi.getBranding,
   })
 
+  // Animation toggle query and mutation
+  const { data: animationSettings } = useQuery({
+    queryKey: ['animation-enabled'],
+    queryFn: brandingApi.getAnimationEnabled,
+  })
+
+  const updateAnimationMutation = useMutation({
+    mutationFn: (enabled: boolean) => brandingApi.updateAnimationEnabled(enabled),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['animation-enabled'] })
+    },
+  })
+
   const updateNameMutation = useMutation({
     mutationFn: (name: string) => brandingApi.updateName(name),
     onSuccess: () => {
@@ -1185,6 +1198,29 @@ export default function AdminSettings() {
             <p className="text-xs text-dark-500 mt-2">
               Оставьте пустым, чтобы показывать только логотип
             </p>
+          </div>
+        </div>
+
+        {/* Animation Toggle */}
+        <div className="mt-6 pt-6 border-t border-dark-700/50">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-medium text-dark-200">Анимированный фон</h3>
+              <p className="text-xs text-dark-500 mt-0.5">
+                Волновая анимация на фоне для всех пользователей
+              </p>
+            </div>
+            <button
+              onClick={() => updateAnimationMutation.mutate(!(animationSettings?.enabled ?? true))}
+              disabled={updateAnimationMutation.isPending}
+              className={`relative w-12 h-6 rounded-full transition-colors ${
+                (animationSettings?.enabled ?? true) ? 'bg-accent-500' : 'bg-dark-600'
+              } ${updateAnimationMutation.isPending ? 'opacity-50' : ''}`}
+            >
+              <div className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                (animationSettings?.enabled ?? true) ? 'left-7' : 'left-1'
+              }`} />
+            </button>
           </div>
         </div>
       </div>
