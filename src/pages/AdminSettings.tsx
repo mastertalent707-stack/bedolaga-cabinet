@@ -38,6 +38,12 @@ const ChevronDownIcon = () => (
   </svg>
 )
 
+const ChevronRightIcon = () => (
+  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+  </svg>
+)
+
 const UploadIcon = () => (
   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
@@ -92,83 +98,52 @@ const MoonIcon = () => (
   </svg>
 )
 
-// ============ TAB DEFINITIONS ============
-const TABS = [
-  { id: 'favorites', label: 'Избранное', icon: StarIcon },
-  { id: 'branding', label: 'Брендинг', icon: null },
-  { id: 'theme', label: 'Тема', icon: null },
-  { id: 'payments', label: 'Платежи', icon: null },
-  { id: 'subscriptions', label: 'Подписки', icon: null },
-  { id: 'interface', label: 'Интерфейс', icon: null },
-  { id: 'more', label: 'Ещё', icon: ChevronDownIcon, isDropdown: true },
-] as const
-
-const MORE_TABS = [
-  { id: 'notifications', label: 'Уведомления' },
-  { id: 'database', label: 'База данных' },
-  { id: 'system', label: 'Система' },
-  { id: 'users', label: 'Пользователи' },
-] as const
-
-// ============ META CATEGORIES ============
-const META_CATEGORIES: Record<string, { label: string; categories: string[] }> = {
-  payments: {
-    label: 'Платежные системы',
-    categories: ['PAYMENT', 'PAYMENT_VERIFICATION', 'YOOKASSA', 'CRYPTOBOT', 'HELEKET', 'PLATEGA', 'TRIBUTE', 'MULENPAY', 'PAL24', 'WATA', 'TELEGRAM'],
-  },
-  subscriptions: {
-    label: 'Подписки и тарифы',
-    categories: ['SUBSCRIPTIONS_CORE', 'SIMPLE_SUBSCRIPTION', 'PERIODS', 'SUBSCRIPTION_PRICES', 'TRAFFIC', 'TRAFFIC_PACKAGES', 'TRIAL', 'AUTOPAY'],
-  },
-  interface: {
-    label: 'Интерфейс',
-    categories: ['INTERFACE', 'INTERFACE_BRANDING', 'INTERFACE_SUBSCRIPTION', 'CONNECT_BUTTON', 'MINIAPP', 'HAPP', 'SKIP', 'ADDITIONAL'],
-  },
-  notifications: {
-    label: 'Уведомления',
-    categories: ['NOTIFICATIONS', 'ADMIN_NOTIFICATIONS', 'ADMIN_REPORTS'],
-  },
-  database: {
-    label: 'База данных',
-    categories: ['DATABASE', 'POSTGRES', 'SQLITE', 'REDIS'],
-  },
-  system: {
-    label: 'Система',
-    categories: ['CORE', 'REMNAWAVE', 'SERVER_STATUS', 'MONITORING', 'MAINTENANCE', 'BACKUP', 'VERSION', 'WEB_API', 'WEBHOOK', 'LOG', 'DEBUG', 'EXTERNAL_ADMIN'],
-  },
-  users: {
-    label: 'Пользователи',
-    categories: ['SUPPORT', 'LOCALIZATION', 'CHANNEL', 'TIMEZONE', 'REFERRAL', 'MODERATION'],
-  },
+// ============ SIDEBAR MENU ITEMS ============
+interface MenuItem {
+  id: string
+  icon: ((props: { filled?: boolean }) => JSX.Element) | null
+  categories?: string[]
 }
 
-// ============ THEME PRESETS ============
-const THEME_PRESETS: { name: string; colors: ThemeColors }[] = [
-  { name: 'Стандарт', colors: DEFAULT_THEME_COLORS },
-  { name: 'Океан', colors: { accent: '#0ea5e9', darkBackground: '#0c1222', darkSurface: '#1e293b', darkText: '#f1f5f9', darkTextSecondary: '#94a3b8', lightBackground: '#e0f2fe', lightSurface: '#f0f9ff', lightText: '#0c4a6e', lightTextSecondary: '#0369a1', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
-  { name: 'Лес', colors: { accent: '#22c55e', darkBackground: '#0a1a0f', darkSurface: '#14532d', darkText: '#f0fdf4', darkTextSecondary: '#86efac', lightBackground: '#dcfce7', lightSurface: '#f0fdf4', lightText: '#14532d', lightTextSecondary: '#166534', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
-  { name: 'Закат', colors: { accent: '#f97316', darkBackground: '#1c1009', darkSurface: '#2d1a0e', darkText: '#fff7ed', darkTextSecondary: '#fdba74', lightBackground: '#ffedd5', lightSurface: '#fff7ed', lightText: '#7c2d12', lightTextSecondary: '#c2410c', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
-  { name: 'Фиолет', colors: { accent: '#a855f7', darkBackground: '#0f0a1a', darkSurface: '#1e1b2e', darkText: '#faf5ff', darkTextSecondary: '#c4b5fd', lightBackground: '#f3e8ff', lightSurface: '#faf5ff', lightText: '#581c87', lightTextSecondary: '#7e22ce', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
-  { name: 'Роза', colors: { accent: '#f43f5e', darkBackground: '#1a0a10', darkSurface: '#2d1520', darkText: '#fff1f2', darkTextSecondary: '#fda4af', lightBackground: '#ffe4e6', lightSurface: '#fff1f2', lightText: '#881337', lightTextSecondary: '#be123c', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
-  { name: 'Полночь', colors: { accent: '#6366f1', darkBackground: '#030712', darkSurface: '#111827', darkText: '#f9fafb', darkTextSecondary: '#9ca3af', lightBackground: '#e5e7eb', lightSurface: '#f3f4f6', lightText: '#111827', lightTextSecondary: '#4b5563', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
-  { name: 'Бирюза', colors: { accent: '#14b8a6', darkBackground: '#0a1614', darkSurface: '#134e4a', darkText: '#f0fdfa', darkTextSecondary: '#5eead4', lightBackground: '#ccfbf1', lightSurface: '#f0fdfa', lightText: '#134e4a', lightTextSecondary: '#0f766e', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
+interface MenuSection {
+  id: string
+  items: MenuItem[]
+}
+
+const MENU_SECTIONS: MenuSection[] = [
+  {
+    id: 'main',
+    items: [
+      { id: 'favorites', icon: StarIcon },
+      { id: 'branding', icon: null },
+      { id: 'theme', icon: null },
+    ]
+  },
+  {
+    id: 'settings',
+    items: [
+      { id: 'payments', icon: null, categories: ['PAYMENT', 'PAYMENT_VERIFICATION', 'YOOKASSA', 'CRYPTOBOT', 'HELEKET', 'PLATEGA', 'TRIBUTE', 'MULENPAY', 'PAL24', 'WATA', 'TELEGRAM'] },
+      { id: 'subscriptions', icon: null, categories: ['SUBSCRIPTIONS_CORE', 'SIMPLE_SUBSCRIPTION', 'PERIODS', 'SUBSCRIPTION_PRICES', 'TRAFFIC', 'TRAFFIC_PACKAGES', 'TRIAL', 'AUTOPAY'] },
+      { id: 'interface', icon: null, categories: ['INTERFACE', 'INTERFACE_BRANDING', 'INTERFACE_SUBSCRIPTION', 'CONNECT_BUTTON', 'MINIAPP', 'HAPP', 'SKIP', 'ADDITIONAL'] },
+      { id: 'notifications', icon: null, categories: ['NOTIFICATIONS', 'ADMIN_NOTIFICATIONS', 'ADMIN_REPORTS'] },
+      { id: 'database', icon: null, categories: ['DATABASE', 'POSTGRES', 'SQLITE', 'REDIS'] },
+      { id: 'system', icon: null, categories: ['CORE', 'REMNAWAVE', 'SERVER_STATUS', 'MONITORING', 'MAINTENANCE', 'BACKUP', 'VERSION', 'WEB_API', 'WEBHOOK', 'LOG', 'DEBUG', 'EXTERNAL_ADMIN'] },
+      { id: 'users', icon: null, categories: ['SUPPORT', 'LOCALIZATION', 'CHANNEL', 'TIMEZONE', 'REFERRAL', 'MODERATION'] },
+    ]
+  }
 ]
 
-// ============ SETTING TRANSLATIONS ============
-const SETTING_TRANSLATIONS: Record<string, { name: string; description: string }> = {
-  BOT_USERNAME: { name: 'Username бота', description: 'Имя бота в Telegram' },
-  SUPPORT_USERNAME: { name: 'Username поддержки', description: 'Telegram @username поддержки' },
-  SUPPORT_MENU_ENABLED: { name: 'Меню поддержки', description: 'Показывать раздел поддержки' },
-  DEFAULT_LANGUAGE: { name: 'Язык по умолчанию', description: 'Язык интерфейса' },
-  TIMEZONE: { name: 'Часовой пояс', description: 'Временная зона системы' },
-  REFERRAL_PROGRAM_ENABLED: { name: 'Реферальная программа', description: 'Включить рефералку' },
-  YOOKASSA_ENABLED: { name: 'YooKassa', description: 'Приём платежей через YooKassa' },
-  CRYPTOBOT_ENABLED: { name: 'CryptoBot', description: 'Приём криптовалюты' },
-  TELEGRAM_STARS_ENABLED: { name: 'Telegram Stars', description: 'Оплата звёздами' },
-  TRIAL_DURATION_DAYS: { name: 'Триал (дней)', description: 'Длительность пробного периода' },
-  DEFAULT_DEVICE_LIMIT: { name: 'Устройств по умолчанию', description: 'Лимит устройств' },
-  // Add more as needed...
-}
+// ============ THEME PRESETS ============
+const THEME_PRESETS: { id: string; colors: ThemeColors }[] = [
+  { id: 'standard', colors: DEFAULT_THEME_COLORS },
+  { id: 'ocean', colors: { accent: '#0ea5e9', darkBackground: '#0c1222', darkSurface: '#1e293b', darkText: '#f1f5f9', darkTextSecondary: '#94a3b8', lightBackground: '#e0f2fe', lightSurface: '#f0f9ff', lightText: '#0c4a6e', lightTextSecondary: '#0369a1', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
+  { id: 'forest', colors: { accent: '#22c55e', darkBackground: '#0a1a0f', darkSurface: '#14532d', darkText: '#f0fdf4', darkTextSecondary: '#86efac', lightBackground: '#dcfce7', lightSurface: '#f0fdf4', lightText: '#14532d', lightTextSecondary: '#166534', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
+  { id: 'sunset', colors: { accent: '#f97316', darkBackground: '#1c1009', darkSurface: '#2d1a0e', darkText: '#fff7ed', darkTextSecondary: '#fdba74', lightBackground: '#ffedd5', lightSurface: '#fff7ed', lightText: '#7c2d12', lightTextSecondary: '#c2410c', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
+  { id: 'violet', colors: { accent: '#a855f7', darkBackground: '#0f0a1a', darkSurface: '#1e1b2e', darkText: '#faf5ff', darkTextSecondary: '#c4b5fd', lightBackground: '#f3e8ff', lightSurface: '#faf5ff', lightText: '#581c87', lightTextSecondary: '#7e22ce', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
+  { id: 'rose', colors: { accent: '#f43f5e', darkBackground: '#1a0a10', darkSurface: '#2d1520', darkText: '#fff1f2', darkTextSecondary: '#fda4af', lightBackground: '#ffe4e6', lightSurface: '#fff1f2', lightText: '#881337', lightTextSecondary: '#be123c', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
+  { id: 'midnight', colors: { accent: '#6366f1', darkBackground: '#030712', darkSurface: '#111827', darkText: '#f9fafb', darkTextSecondary: '#9ca3af', lightBackground: '#e5e7eb', lightSurface: '#f3f4f6', lightText: '#111827', lightTextSecondary: '#4b5563', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
+  { id: 'turquoise', colors: { accent: '#14b8a6', darkBackground: '#0a1614', darkSurface: '#134e4a', darkText: '#f0fdfa', darkTextSecondary: '#5eead4', lightBackground: '#ccfbf1', lightSurface: '#f0fdfa', lightText: '#134e4a', lightTextSecondary: '#0f766e', success: '#22c55e', warning: '#f59e0b', error: '#ef4444' } },
+]
 
 // ============ MAIN COMPONENT ============
 export default function AdminSettings() {
@@ -177,12 +152,13 @@ export default function AdminSettings() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // State
-  const [activeTab, setActiveTab] = useState('branding')
+  const [activeSection, setActiveSection] = useState('branding')
+  const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [showMoreDropdown, setShowMoreDropdown] = useState(false)
   const [editingName, setEditingName] = useState(false)
   const [newName, setNewName] = useState('')
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['presets']))
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   // Favorites hook
   const { favorites, toggleFavorite, isFavorite } = useFavoriteSettings()
@@ -318,24 +294,61 @@ export default function AdminSettings() {
     })
   }
 
-  // Filter settings by tab
+  // Get current menu item configuration
+  const currentMenuItem = useMemo(() => {
+    for (const section of MENU_SECTIONS) {
+      const item = section.items.find(i => i.id === activeSection)
+      if (item) return item
+    }
+    return null
+  }, [activeSection])
+
+  // Get categories for current section
+  const currentCategories = useMemo(() => {
+    if (!currentMenuItem?.categories || !allSettings || !Array.isArray(allSettings)) return []
+
+    const categoryMap = new Map<string, SettingDefinition[]>()
+
+    for (const setting of allSettings) {
+      if (currentMenuItem.categories.includes(setting.category.key)) {
+        if (!categoryMap.has(setting.category.key)) {
+          categoryMap.set(setting.category.key, [])
+        }
+        categoryMap.get(setting.category.key)!.push(setting)
+      }
+    }
+
+    return Array.from(categoryMap.entries()).map(([key, settings]) => ({
+      key,
+      label: t(`admin.settings.categories.${key}`, key),
+      settings
+    }))
+  }, [currentMenuItem, allSettings, t])
+
+  // Filter settings for current view
   const filteredSettings = useMemo(() => {
     if (!allSettings || !Array.isArray(allSettings)) return []
 
-    const metaCategories = META_CATEGORIES[activeTab]?.categories || []
-    let filtered = allSettings.filter((s: SettingDefinition) => metaCategories.includes(s.category.key))
+    let settings: SettingDefinition[] = []
 
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase()
-      filtered = filtered.filter((s: SettingDefinition) =>
-        s.key.toLowerCase().includes(q) ||
-        s.name?.toLowerCase().includes(q) ||
-        SETTING_TRANSLATIONS[s.key]?.name.toLowerCase().includes(q)
+    if (activeSubCategory) {
+      settings = allSettings.filter((s: SettingDefinition) => s.category.key === activeSubCategory)
+    } else if (currentMenuItem?.categories) {
+      settings = allSettings.filter((s: SettingDefinition) =>
+        currentMenuItem.categories!.includes(s.category.key)
       )
     }
 
-    return filtered
-  }, [allSettings, activeTab, searchQuery])
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase()
+      settings = settings.filter((s: SettingDefinition) =>
+        s.key.toLowerCase().includes(q) ||
+        s.name?.toLowerCase().includes(q)
+      )
+    }
+
+    return settings
+  }, [allSettings, activeSection, activeSubCategory, currentMenuItem, searchQuery])
 
   // Favorite settings
   const favoriteSettings = useMemo(() => {
@@ -359,9 +372,6 @@ export default function AdminSettings() {
   )
 
   const renderSettingRow = (setting: SettingDefinition) => {
-    const trans = SETTING_TRANSLATIONS[setting.key]
-    const name = trans?.name || setting.name || setting.key
-    const desc = trans?.description || setting.hint?.description
     const isFav = isFavorite(setting.key)
 
     return (
@@ -371,14 +381,16 @@ export default function AdminSettings() {
       >
         <div className="flex-1 min-w-0 mr-4">
           <div className="flex items-center gap-2">
-            <span className="font-medium text-dark-100 truncate">{name}</span>
+            <span className="font-medium text-dark-100 truncate">{setting.name || setting.key}</span>
             {setting.has_override && (
               <span className="px-1.5 py-0.5 text-xs rounded bg-warning-500/20 text-warning-400">
-                Изменено
+                {t('admin.settings.modified')}
               </span>
             )}
           </div>
-          {desc && <p className="text-sm text-dark-400 truncate mt-0.5">{desc}</p>}
+          {setting.hint?.description && (
+            <p className="text-sm text-dark-400 truncate mt-0.5">{setting.hint.description}</p>
+          )}
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -423,7 +435,7 @@ export default function AdminSettings() {
               onClick={() => resetSettingMutation.mutate(setting.key)}
               disabled={resetSettingMutation.isPending}
               className="p-1.5 rounded-lg text-dark-400 hover:text-dark-200 hover:bg-dark-700 transition-colors"
-              title="Сбросить"
+              title={t('admin.settings.reset')}
             >
               <RefreshIcon />
             </button>
@@ -433,12 +445,12 @@ export default function AdminSettings() {
     )
   }
 
-  // ============ TAB CONTENT ============
-  const renderBrandingTab = () => (
+  // ============ CONTENT RENDERERS ============
+  const renderBrandingContent = () => (
     <div className="space-y-6">
       {/* Logo & Name */}
       <div className="p-6 rounded-2xl bg-dark-800/50 border border-dark-700/50">
-        <h3 className="text-lg font-semibold text-dark-100 mb-4">Логотип и название</h3>
+        <h3 className="text-lg font-semibold text-dark-100 mb-4">{t('admin.settings.logoAndName')}</h3>
 
         <div className="flex items-start gap-6">
           {/* Logo */}
@@ -485,7 +497,7 @@ export default function AdminSettings() {
 
           {/* Name */}
           <div className="flex-1">
-            <label className="block text-sm font-medium text-dark-300 mb-2">Название проекта</label>
+            <label className="block text-sm font-medium text-dark-300 mb-2">{t('admin.settings.projectName')}</label>
             {editingName ? (
               <div className="flex gap-2">
                 <input
@@ -493,7 +505,6 @@ export default function AdminSettings() {
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   className="flex-1 px-4 py-2 rounded-xl bg-dark-700 border border-dark-600 text-dark-100 focus:outline-none focus:border-accent-500"
-                  placeholder="Название"
                   maxLength={50}
                 />
                 <button
@@ -512,7 +523,7 @@ export default function AdminSettings() {
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <span className="text-lg text-dark-100">{branding?.name || 'Не указано'}</span>
+                <span className="text-lg text-dark-100">{branding?.name || t('admin.settings.notSpecified')}</span>
                 <button
                   onClick={() => {
                     setNewName(branding?.name ?? '')
@@ -530,13 +541,13 @@ export default function AdminSettings() {
 
       {/* Animation & Fullscreen toggles */}
       <div className="p-6 rounded-2xl bg-dark-800/50 border border-dark-700/50">
-        <h3 className="text-lg font-semibold text-dark-100 mb-4">Опции интерфейса</h3>
+        <h3 className="text-lg font-semibold text-dark-100 mb-4">{t('admin.settings.interfaceOptions')}</h3>
 
         <div className="space-y-4">
           <div className="flex items-center justify-between p-4 rounded-xl bg-dark-700/30">
             <div>
-              <span className="font-medium text-dark-100">Анимированный фон</span>
-              <p className="text-sm text-dark-400">Волны на фоне приложения</p>
+              <span className="font-medium text-dark-100">{t('admin.settings.animatedBackground')}</span>
+              <p className="text-sm text-dark-400">{t('admin.settings.animatedBackgroundDesc')}</p>
             </div>
             {renderToggle(
               animationSettings?.enabled ?? true,
@@ -547,8 +558,8 @@ export default function AdminSettings() {
 
           <div className="flex items-center justify-between p-4 rounded-xl bg-dark-700/30">
             <div>
-              <span className="font-medium text-dark-100">Авто-Fullscreen</span>
-              <p className="text-sm text-dark-400">В Telegram WebApp</p>
+              <span className="font-medium text-dark-100">{t('admin.settings.autoFullscreen')}</span>
+              <p className="text-sm text-dark-400">{t('admin.settings.autoFullscreenDesc')}</p>
             </div>
             {renderToggle(
               fullscreenSettings?.enabled ?? false,
@@ -561,17 +572,17 @@ export default function AdminSettings() {
     </div>
   )
 
-  const renderThemeTab = () => (
+  const renderThemeContent = () => (
     <div className="space-y-6">
       {/* Theme toggles */}
       <div className="p-6 rounded-2xl bg-dark-800/50 border border-dark-700/50">
-        <h3 className="text-lg font-semibold text-dark-100 mb-4">Доступные темы</h3>
+        <h3 className="text-lg font-semibold text-dark-100 mb-4">{t('admin.settings.availableThemes')}</h3>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center justify-between p-4 rounded-xl bg-dark-700/30">
             <div className="flex items-center gap-3">
               <MoonIcon />
-              <span className="font-medium text-dark-200">Тёмная</span>
+              <span className="font-medium text-dark-200">{t('admin.settings.darkTheme')}</span>
             </div>
             {renderToggle(
               enabledThemes?.dark ?? true,
@@ -586,7 +597,7 @@ export default function AdminSettings() {
           <div className="flex items-center justify-between p-4 rounded-xl bg-dark-700/30">
             <div className="flex items-center gap-3">
               <SunIcon />
-              <span className="font-medium text-dark-200">Светлая</span>
+              <span className="font-medium text-dark-200">{t('admin.settings.lightTheme')}</span>
             </div>
             {renderToggle(
               enabledThemes?.light ?? true,
@@ -606,7 +617,7 @@ export default function AdminSettings() {
           onClick={() => toggleSection('presets')}
           className="w-full flex items-center justify-between"
         >
-          <h3 className="text-lg font-semibold text-dark-100">Быстрые пресеты</h3>
+          <h3 className="text-lg font-semibold text-dark-100">{t('admin.settings.quickPresets')}</h3>
           <div className={`transition-transform ${expandedSections.has('presets') ? 'rotate-180' : ''}`}>
             <ChevronDownIcon />
           </div>
@@ -616,7 +627,7 @@ export default function AdminSettings() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
             {THEME_PRESETS.map((preset) => (
               <button
-                key={preset.name}
+                key={preset.id}
                 onClick={() => updateColorsMutation.mutate(preset.colors)}
                 disabled={updateColorsMutation.isPending}
                 className="p-3 rounded-xl border border-dark-600 hover:border-dark-500 transition-all hover:scale-[1.02]"
@@ -628,7 +639,7 @@ export default function AdminSettings() {
                     style={{ backgroundColor: preset.colors.accent }}
                   />
                   <span className="text-xs font-medium" style={{ color: preset.colors.darkText }}>
-                    {preset.name}
+                    {t(`admin.settings.presets.${preset.id}`)}
                   </span>
                 </div>
                 <div className="flex gap-1">
@@ -648,7 +659,7 @@ export default function AdminSettings() {
           onClick={() => toggleSection('colors')}
           className="w-full flex items-center justify-between"
         >
-          <h3 className="text-lg font-semibold text-dark-100">Ручная настройка</h3>
+          <h3 className="text-lg font-semibold text-dark-100">{t('admin.settings.customColors')}</h3>
           <div className={`transition-transform ${expandedSections.has('colors') ? 'rotate-180' : ''}`}>
             <ChevronDownIcon />
           </div>
@@ -658,7 +669,7 @@ export default function AdminSettings() {
           <div className="mt-4 space-y-6">
             {/* Accent */}
             <div>
-              <h4 className="text-sm font-medium text-dark-300 mb-3">Акцентный цвет</h4>
+              <h4 className="text-sm font-medium text-dark-300 mb-3">{t('admin.settings.accentColor')}</h4>
               <ColorPicker
                 label={t('theme.accent')}
                 value={themeColors?.accent || DEFAULT_THEME_COLORS.accent}
@@ -670,29 +681,29 @@ export default function AdminSettings() {
             {/* Dark theme */}
             <div>
               <h4 className="text-sm font-medium text-dark-300 mb-3 flex items-center gap-2">
-                <MoonIcon /> Тёмная тема
+                <MoonIcon /> {t('admin.settings.darkTheme')}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <ColorPicker
-                  label="Фон"
+                  label={t('admin.settings.colors.background')}
                   value={themeColors?.darkBackground || DEFAULT_THEME_COLORS.darkBackground}
                   onChange={(color) => updateColorsMutation.mutate({ darkBackground: color })}
                   disabled={updateColorsMutation.isPending}
                 />
                 <ColorPicker
-                  label="Поверхность"
+                  label={t('admin.settings.colors.surface')}
                   value={themeColors?.darkSurface || DEFAULT_THEME_COLORS.darkSurface}
                   onChange={(color) => updateColorsMutation.mutate({ darkSurface: color })}
                   disabled={updateColorsMutation.isPending}
                 />
                 <ColorPicker
-                  label="Текст"
+                  label={t('admin.settings.colors.text')}
                   value={themeColors?.darkText || DEFAULT_THEME_COLORS.darkText}
                   onChange={(color) => updateColorsMutation.mutate({ darkText: color })}
                   disabled={updateColorsMutation.isPending}
                 />
                 <ColorPicker
-                  label="Вторичный текст"
+                  label={t('admin.settings.colors.textSecondary')}
                   value={themeColors?.darkTextSecondary || DEFAULT_THEME_COLORS.darkTextSecondary}
                   onChange={(color) => updateColorsMutation.mutate({ darkTextSecondary: color })}
                   disabled={updateColorsMutation.isPending}
@@ -703,29 +714,29 @@ export default function AdminSettings() {
             {/* Light theme */}
             <div>
               <h4 className="text-sm font-medium text-dark-300 mb-3 flex items-center gap-2">
-                <SunIcon /> Светлая тема
+                <SunIcon /> {t('admin.settings.lightTheme')}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <ColorPicker
-                  label="Фон"
+                  label={t('admin.settings.colors.background')}
                   value={themeColors?.lightBackground || DEFAULT_THEME_COLORS.lightBackground}
                   onChange={(color) => updateColorsMutation.mutate({ lightBackground: color })}
                   disabled={updateColorsMutation.isPending}
                 />
                 <ColorPicker
-                  label="Поверхность"
+                  label={t('admin.settings.colors.surface')}
                   value={themeColors?.lightSurface || DEFAULT_THEME_COLORS.lightSurface}
                   onChange={(color) => updateColorsMutation.mutate({ lightSurface: color })}
                   disabled={updateColorsMutation.isPending}
                 />
                 <ColorPicker
-                  label="Текст"
+                  label={t('admin.settings.colors.text')}
                   value={themeColors?.lightText || DEFAULT_THEME_COLORS.lightText}
                   onChange={(color) => updateColorsMutation.mutate({ lightText: color })}
                   disabled={updateColorsMutation.isPending}
                 />
                 <ColorPicker
-                  label="Вторичный текст"
+                  label={t('admin.settings.colors.textSecondary')}
                   value={themeColors?.lightTextSecondary || DEFAULT_THEME_COLORS.lightTextSecondary}
                   onChange={(color) => updateColorsMutation.mutate({ lightTextSecondary: color })}
                   disabled={updateColorsMutation.isPending}
@@ -735,22 +746,22 @@ export default function AdminSettings() {
 
             {/* Status colors */}
             <div>
-              <h4 className="text-sm font-medium text-dark-300 mb-3">Статусные цвета</h4>
+              <h4 className="text-sm font-medium text-dark-300 mb-3">{t('admin.settings.statusColors')}</h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <ColorPicker
-                  label="Успех"
+                  label={t('admin.settings.colors.success')}
                   value={themeColors?.success || DEFAULT_THEME_COLORS.success}
                   onChange={(color) => updateColorsMutation.mutate({ success: color })}
                   disabled={updateColorsMutation.isPending}
                 />
                 <ColorPicker
-                  label="Предупреждение"
+                  label={t('admin.settings.colors.warning')}
                   value={themeColors?.warning || DEFAULT_THEME_COLORS.warning}
                   onChange={(color) => updateColorsMutation.mutate({ warning: color })}
                   disabled={updateColorsMutation.isPending}
                 />
                 <ColorPicker
-                  label="Ошибка"
+                  label={t('admin.settings.colors.error')}
                   value={themeColors?.error || DEFAULT_THEME_COLORS.error}
                   onChange={(color) => updateColorsMutation.mutate({ error: color })}
                   disabled={updateColorsMutation.isPending}
@@ -764,7 +775,7 @@ export default function AdminSettings() {
               disabled={resetColorsMutation.isPending}
               className="px-4 py-2 rounded-xl bg-dark-700 text-dark-300 hover:bg-dark-600 transition-colors disabled:opacity-50"
             >
-              Сбросить все цвета
+              {t('admin.settings.resetAllColors')}
             </button>
           </div>
         )}
@@ -772,15 +783,15 @@ export default function AdminSettings() {
     </div>
   )
 
-  const renderFavoritesTab = () => (
+  const renderFavoritesContent = () => (
     <div className="space-y-4">
       {favoriteSettings.length === 0 ? (
         <div className="p-12 rounded-2xl bg-dark-800/30 border border-dark-700/30 text-center">
-          <StarIcon filled={false} />
-          <p className="text-dark-400 mt-4">Нет избранных настроек</p>
-          <p className="text-dark-500 text-sm mt-1">
-            Нажмите ⭐ рядом с настройкой, чтобы добавить её сюда
-          </p>
+          <div className="flex justify-center mb-4 text-dark-500">
+            <StarIcon filled={false} />
+          </div>
+          <p className="text-dark-400">{t('admin.settings.favoritesEmpty')}</p>
+          <p className="text-dark-500 text-sm mt-1">{t('admin.settings.favoritesHint')}</p>
         </div>
       ) : (
         favoriteSettings.map(renderSettingRow)
@@ -788,11 +799,42 @@ export default function AdminSettings() {
     </div>
   )
 
-  const renderSettingsTab = () => (
+  const renderSettingsContent = () => (
     <div className="space-y-4">
+      {/* Sub-categories navigation */}
+      {currentCategories.length > 1 && !activeSubCategory && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+          {currentCategories.map((cat) => (
+            <button
+              key={cat.key}
+              onClick={() => setActiveSubCategory(cat.key)}
+              className="p-4 rounded-xl bg-dark-800/50 border border-dark-700/50 hover:border-dark-600 transition-all text-left"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-dark-200">{cat.label}</span>
+                <ChevronRightIcon />
+              </div>
+              <span className="text-sm text-dark-500">{cat.settings.length} {t('admin.settings.settingsCount')}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Back button if in sub-category */}
+      {activeSubCategory && (
+        <button
+          onClick={() => setActiveSubCategory(null)}
+          className="flex items-center gap-2 text-dark-400 hover:text-dark-200 transition-colors mb-4"
+        >
+          <BackIcon />
+          <span>{t('common.back')}</span>
+        </button>
+      )}
+
+      {/* Settings list */}
       {filteredSettings.length === 0 ? (
         <div className="p-12 rounded-2xl bg-dark-800/30 border border-dark-700/30 text-center">
-          <p className="text-dark-400">Нет настроек в этой категории</p>
+          <p className="text-dark-400">{t('admin.settings.noSettings')}</p>
         </div>
       ) : (
         filteredSettings.map(renderSettingRow)
@@ -802,101 +844,105 @@ export default function AdminSettings() {
 
   // ============ RENDER ============
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link to="/admin" className="p-2 rounded-xl bg-dark-800 hover:bg-dark-700 transition-colors">
-            <BackIcon />
-          </Link>
-          <h1 className="text-2xl font-bold text-dark-100">Настройки</h1>
-        </div>
-
-        {/* Search */}
-        <div className="relative">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Поиск..."
-            className="w-64 pl-10 pr-4 py-2 rounded-xl bg-dark-800 border border-dark-700 text-dark-100 placeholder-dark-500 focus:outline-none focus:border-accent-500"
-          />
-          <div className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-500">
-            <SearchIcon />
+    <div className="flex h-full min-h-[600px]">
+      {/* Sidebar */}
+      <div className={`flex-shrink-0 bg-dark-900/50 border-r border-dark-700/50 transition-all ${
+        sidebarCollapsed ? 'w-16' : 'w-64'
+      }`}>
+        {/* Header */}
+        <div className="p-4 border-b border-dark-700/50">
+          <div className="flex items-center gap-3">
+            <Link to="/admin" className="p-2 rounded-xl bg-dark-800 hover:bg-dark-700 transition-colors">
+              <BackIcon />
+            </Link>
+            {!sidebarCollapsed && (
+              <h1 className="text-lg font-bold text-dark-100">{t('admin.settings.title')}</h1>
+            )}
           </div>
         </div>
+
+        {/* Menu */}
+        <nav className="p-2 space-y-1">
+          {MENU_SECTIONS.map((section, sectionIdx) => (
+            <div key={section.id}>
+              {sectionIdx > 0 && <div className="my-3 border-t border-dark-700/50" />}
+              {section.items.map((item) => {
+                const isActive = activeSection === item.id
+                const Icon = item.icon
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setActiveSection(item.id)
+                      setActiveSubCategory(null)
+                    }}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all ${
+                      isActive
+                        ? 'bg-accent-500/10 text-accent-400'
+                        : 'text-dark-400 hover:text-dark-200 hover:bg-dark-800/50'
+                    }`}
+                  >
+                    {Icon && <Icon filled={isActive && item.id === 'favorites'} />}
+                    {!sidebarCollapsed && (
+                      <span className="font-medium">{t(`admin.settings.${item.id}`)}</span>
+                    )}
+                    {item.id === 'favorites' && favorites.length > 0 && !sidebarCollapsed && (
+                      <span className="ml-auto px-2 py-0.5 text-xs rounded-full bg-warning-500/20 text-warning-400">
+                        {favorites.length}
+                      </span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          ))}
+        </nav>
+
+        {/* Collapse toggle */}
+        <button
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="absolute bottom-4 left-4 p-2 rounded-lg text-dark-500 hover:text-dark-300 hover:bg-dark-800 transition-colors"
+        >
+          <div className={`transition-transform ${sidebarCollapsed ? 'rotate-180' : ''}`}>
+            <ChevronRightIcon />
+          </div>
+        </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-1 p-1 rounded-2xl bg-dark-800/50 border border-dark-700/50 overflow-x-auto">
-        {TABS.map((tab) => {
-          if (tab.id === 'more') {
-            return (
-              <div key={tab.id} className="relative">
-                <button
-                  onClick={() => setShowMoreDropdown(!showMoreDropdown)}
-                  className={`flex items-center gap-1 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
-                    MORE_TABS.some(t => t.id === activeTab)
-                      ? 'bg-accent-500 text-white'
-                      : 'text-dark-400 hover:text-dark-200 hover:bg-dark-700/50'
-                  }`}
-                >
-                  {tab.label}
-                  <ChevronDownIcon />
-                </button>
-
-                {showMoreDropdown && (
-                  <div className="absolute top-full right-0 mt-2 py-2 min-w-[160px] rounded-xl bg-dark-800 border border-dark-700 shadow-xl z-50">
-                    {MORE_TABS.map((moreTab) => (
-                      <button
-                        key={moreTab.id}
-                        onClick={() => {
-                          setActiveTab(moreTab.id)
-                          setShowMoreDropdown(false)
-                        }}
-                        className={`w-full px-4 py-2 text-left text-sm transition-colors ${
-                          activeTab === moreTab.id
-                            ? 'text-accent-400 bg-accent-500/10'
-                            : 'text-dark-300 hover:text-dark-100 hover:bg-dark-700/50'
-                        }`}
-                      >
-                        {moreTab.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )
-          }
-
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'bg-accent-500 text-white'
-                  : 'text-dark-400 hover:text-dark-200 hover:bg-dark-700/50'
-              }`}
-            >
-              {tab.id === 'favorites' && <StarIcon filled={activeTab === 'favorites'} />}
-              {tab.label}
-              {tab.id === 'favorites' && favorites.length > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 text-xs rounded-full bg-white/20">
-                  {favorites.length}
-                </span>
+      {/* Main content */}
+      <div className="flex-1 overflow-auto">
+        {/* Search header */}
+        <div className="sticky top-0 z-10 bg-dark-900/80 backdrop-blur-xl border-b border-dark-700/50 p-4">
+          <div className="flex items-center gap-4">
+            <h2 className="text-xl font-semibold text-dark-100">
+              {t(`admin.settings.${activeSection}`)}
+              {activeSubCategory && (
+                <span className="text-dark-400 font-normal"> / {t(`admin.settings.categories.${activeSubCategory}`, activeSubCategory)}</span>
               )}
-            </button>
-          )
-        })}
-      </div>
+            </h2>
+            <div className="flex-1" />
+            <div className="relative">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={t('admin.settings.searchPlaceholder')}
+                className="w-64 pl-10 pr-4 py-2 rounded-xl bg-dark-800 border border-dark-700 text-dark-100 placeholder-dark-500 focus:outline-none focus:border-accent-500"
+              />
+              <div className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-500">
+                <SearchIcon />
+              </div>
+            </div>
+          </div>
+        </div>
 
-      {/* Tab Content */}
-      <div className="min-h-[400px]">
-        {activeTab === 'favorites' && renderFavoritesTab()}
-        {activeTab === 'branding' && renderBrandingTab()}
-        {activeTab === 'theme' && renderThemeTab()}
-        {['payments', 'subscriptions', 'interface', 'notifications', 'database', 'system', 'users'].includes(activeTab) && renderSettingsTab()}
+        {/* Content */}
+        <div className="p-6">
+          {activeSection === 'favorites' && renderFavoritesContent()}
+          {activeSection === 'branding' && renderBrandingContent()}
+          {activeSection === 'theme' && renderThemeContent()}
+          {['payments', 'subscriptions', 'interface', 'notifications', 'database', 'system', 'users'].includes(activeSection) && renderSettingsContent()}
+        </div>
       </div>
     </div>
   )
