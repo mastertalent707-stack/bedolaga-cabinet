@@ -105,62 +105,11 @@ const MenuIcon = () => (
 )
 
 // ============ HELPER FUNCTIONS ============
-// Словарь переводов для распространенных настроек
-const SETTING_TRANSLATIONS: Record<string, string> = {
-  // Skip
-  'Skip Referral Code': 'Пропуск реферального кода',
-  'Skip Rules Accept': 'Пропуск принятия правил',
-  // HAPP
-  'Connect Button Happ Download Enabled': 'Кнопка скачивания Happ',
-  'Happ Cryptolink Redirect Template': 'Шаблон редиректа Happ',
-  'Happ Download Link Android': 'Ссылка скачивания Happ (Android)',
-  'Happ Download Link Ios': 'Ссылка скачивания Happ (iOS)',
-  'Happ Download Link Macos': 'Ссылка скачивания Happ (macOS)',
-  'Happ Download Link Pc': 'Ссылка скачивания Happ (PC)',
-  'Happ Download Link Windows': 'Ссылка скачивания Happ (Windows)',
-  // Interface
-  'Main Menu Mode': 'Режим главного меню',
-  // MiniApp
-  'Cabinet Remna Sub Config': 'UUID конфига RemnaWave',
-  'Miniapp Purchase Url': 'URL покупки в MiniApp',
-  'Miniapp Service Description En': 'Описание сервиса (EN)',
-  'Miniapp Service Description Ru': 'Описание сервиса (RU)',
-  'Miniapp Service Name En': 'Название сервиса (EN)',
-  'Miniapp Service Name Ru': 'Название сервиса (RU)',
-  'Miniapp Static Path': 'Путь к статике MiniApp',
-  'Miniapp Support Type': 'Тип поддержки MiniApp',
-  'Miniapp Support Url': 'URL поддержки MiniApp',
-  'Miniapp Tickets Enabled': 'Тикеты в MiniApp',
-  // Branding
-  'Bot Name': 'Название бота',
-  'Logo Letter': 'Буква логотипа',
-  // Connect Button
-  'Connect Button Enabled': 'Кнопка подключения',
-  'Connect Button Text': 'Текст кнопки подключения',
-  // Additional
-  'Additional Menu Enabled': 'Дополнительное меню',
-  'Additional Menu Items': 'Элементы доп. меню',
-  'Additional Menu Title': 'Заголовок доп. меню',
-  // Subscription Interface
-  'Subscription Page Layout': 'Макет страницы подписки',
-  // Common
-  'Enabled': 'Включено',
-  'Disabled': 'Отключено',
-  'Debug Mode': 'Режим отладки',
-  'Log Level': 'Уровень логирования',
-  'Api Url': 'URL API',
-  'Api Key': 'API ключ',
-  'Api Token': 'API токен',
-  'Webhook Url': 'URL вебхука',
-  'Webhook Secret': 'Секрет вебхука',
-}
-
 // Форматирование названия настройки (Snake_Case / CamelCase -> читаемый текст)
-function formatSettingName(name: string): string {
+function formatSettingKey(name: string): string {
   if (!name) return ''
 
-  // Сначала форматируем в читаемый вид
-  let formatted = name
+  return name
     // CamelCase -> пробелы
     .replace(/([a-z])([A-Z])/g, '$1 $2')
     // snake_case -> пробелы
@@ -168,18 +117,14 @@ function formatSettingName(name: string): string {
     // Убираем лишние пробелы
     .replace(/\s+/g, ' ')
     .trim()
-
-  // Делаем первую букву заглавной
-  formatted = formatted.charAt(0).toUpperCase() + formatted.slice(1)
-
-  // Проверяем есть ли перевод
-  return SETTING_TRANSLATIONS[formatted] || formatted
+    // Первая буква заглавная
+    .replace(/^./, c => c.toUpperCase())
 }
 
-// Очистка HTML тегов из описания
+// Очистка HTML тегов и шаблонных описаний
 function stripHtml(html: string): string {
   if (!html) return ''
-  return html
+  let cleaned = html
     .replace(/<[^>]*>/g, '')
     .replace(/&nbsp;/g, ' ')
     .replace(/&amp;/g, '&')
@@ -187,6 +132,13 @@ function stripHtml(html: string): string {
     .replace(/&gt;/g, '>')
     .replace(/&quot;/g, '"')
     .trim()
+
+  // Убираем шаблонные описания типа "Параметр X управляет категорией Y"
+  if (cleaned.match(/^Параметр .+ управляет категорией/)) {
+    return ''
+  }
+
+  return cleaned
 }
 
 // ============ SIDEBAR MENU ITEMS ============
@@ -464,7 +416,9 @@ export default function AdminSettings() {
 
   const renderSettingRow = (setting: SettingDefinition) => {
     const isFav = isFavorite(setting.key)
-    const displayName = formatSettingName(setting.name || setting.key)
+    // Форматируем ключ в читаемый вид и ищем перевод
+    const formattedKey = formatSettingKey(setting.name || setting.key)
+    const displayName = t(`admin.settings.settingNames.${formattedKey}`, formattedKey)
     const description = setting.hint?.description ? stripHtml(setting.hint.description) : null
 
     return (
