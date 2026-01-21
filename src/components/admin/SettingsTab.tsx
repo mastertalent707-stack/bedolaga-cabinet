@@ -66,7 +66,7 @@ export function SettingsTab({
             <p className="text-dark-400">{t('admin.settings.noSettings')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {filteredSettings.map((setting) => (
               <SettingRow
                 key={setting.key}
@@ -114,7 +114,7 @@ export function SettingsTab({
             {/* Accordion content */}
             {isExpanded && (
               <div className="p-4 pt-0 border-t border-dark-700/30">
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 pt-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-4">
                   {cat.settings.map((setting) => (
                     <SettingRow
                       key={setting.key}

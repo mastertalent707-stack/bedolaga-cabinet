@@ -1191,7 +1191,7 @@
         "POSTGRES": "PostgreSQL",
         "SQLITE": "SQLite",
         "REDIS": "Redis",
-        "CORE": "Ядро",
+        "CORE": "Бот",
         "REMNAWAVE": "RemnaWave",
         "SERVER_STATUS": "Статус сервера",
         "MONITORING": "Мониторинг",

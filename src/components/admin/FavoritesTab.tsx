@@ -41,7 +41,7 @@ export function FavoritesTab({ settings, isFavorite, toggleFavorite }: Favorites
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {settings.map((setting) => (
         <SettingRow
           key={setting.key}
