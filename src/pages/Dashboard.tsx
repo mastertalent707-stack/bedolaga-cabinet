@@ -279,8 +279,10 @@ export default function Dashboard() {
       {/* Pending Gift Activations */}
       {pendingGifts && pendingGifts.length > 0 && <PendingGiftCard gifts={pendingGifts} />}
 
-      {/* Multi-tariff: show subscription cards (max 3) */}
-      {isMultiTariff && multiSubData?.subscriptions && (
+      {/* Multi-tariff: show subscription cards (max 3) — только когда подписки
+          реально есть. Пустой случай (нет подписок) ведёт блок ниже (триал/покупка),
+          иначе кнопка покупки дублировалась. */}
+      {isMultiTariff && multiSubData?.subscriptions && multiSubData.subscriptions.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between px-1">
             <span className="text-sm font-medium opacity-60">
@@ -361,20 +363,22 @@ export default function Dashboard() {
         </>
       )}
 
-      {/* Trial Activation */}
-      {hasNoSubscription && !trialLoading && trialInfo?.is_available && (
+      {/* Нет подписок: показываем триал (если доступен) и ВСЕГДА одну явную
+          кнопку покупки. Триал не обязателен, чтобы попасть в витрину — раньше
+          при доступном триале это был единственный экран без кнопки покупки
+          (Telegram-баг #605056/#605063). Единственная кнопка тут (вместо дубля
+          с мульти-тариф блоком). */}
+      {hasNoSubscription && !trialLoading && (
         <div className="space-y-3">
-          <TrialOfferCard
-            trialInfo={trialInfo}
-            balanceKopeks={balanceData?.balance_kopeks || 0}
-            balanceRubles={balanceData?.balance_rubles || 0}
-            activateTrialMutation={activateTrialMutation}
-            trialError={trialError}
-          />
-          {/* Новый пользователь не обязан активировать триал, чтобы попасть в
-              витрину — даём явный путь к покупке подписки. Раньше при доступном
-              триале это был единственный экран без кнопки покупки, и на дашборде
-              (вход по умолчанию) юзер оставался заперт (Telegram-баг #605056/#605063). */}
+          {trialInfo?.is_available && (
+            <TrialOfferCard
+              trialInfo={trialInfo}
+              balanceKopeks={balanceData?.balance_kopeks || 0}
+              balanceRubles={balanceData?.balance_rubles || 0}
+              activateTrialMutation={activateTrialMutation}
+              trialError={trialError}
+            />
+          )}
           <Link
             to="/subscription/purchase"
             className="flex w-full items-center justify-center gap-2 rounded-2xl bg-accent-500 p-3.5 text-sm font-semibold text-white transition-colors hover:bg-accent-600"
