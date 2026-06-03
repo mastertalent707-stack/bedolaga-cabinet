@@ -149,11 +149,12 @@ export default function InstallationGuide({
     ],
   );
 
-  const selectedIsTv =
-    (activePlatformKey || availablePlatforms[0]) === 'androidTV' ||
-    (activePlatformKey || availablePlatforms[0]) === 'appleTV';
   const userIsOnTv = detectedPlatform === 'androidTV' || detectedPlatform === 'appleTV';
-  const isTvPlatform = selectedIsTv && !userIsOnTv;
+  // Happ's TV quick-connect (check.happ.su/sendtv, 5-digit code) is an ANDROID TV
+  // -only API. Apple TV uses a different mechanism (tv.happ.su temporary code), so
+  // the block must NOT show there — it would POST to the wrong endpoint.
+  const isAndroidTvLayout =
+    (activePlatformKey || availablePlatforms[0]) === 'androidTV' && !userIsOnTv;
 
   const currentPlatformKey = activePlatformKey || availablePlatforms[0];
   const currentPlatformData = currentPlatformKey
@@ -322,7 +323,7 @@ export default function InstallationGuide({
 
       {/* Blocks — for the Happ TV app: first block, Quick Connect, last block.
           Other apps (or non-TV) render their blocks normally. */}
-      {selectedApp && isTvPlatform && isHappApp(selectedApp) && appConfig.subscriptionUrl ? (
+      {selectedApp && isAndroidTvLayout && isHappApp(selectedApp) && appConfig.subscriptionUrl ? (
         <>
           {selectedApp.blocks.length > 0 && (
             <Renderer
