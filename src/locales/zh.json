@@ -4351,6 +4351,13 @@
       "openBot": "打开机器人",
       "retry": "我已按 /start，重试",
       "hint": "运行 /start 后，返回此处并点击「重试」。"
+    },
+    "serviceUnavailable": {
+      "title": "服务不可用",
+      "description": "暂时无法连接到服务。可能正在进行维护，或存在临时的网络问题。",
+      "retry": "重试",
+      "checking": "正在检查连接...",
+      "hint": "服务恢复后，本页面将自动刷新。"
     }
   },
   "banSystem": {

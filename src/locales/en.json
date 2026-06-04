@@ -4810,6 +4810,13 @@
       "openBot": "Open the bot",
       "retry": "I pressed /start, retry",
       "hint": "After running /start, return here and tap «Retry»."
+    },
+    "serviceUnavailable": {
+      "title": "Service unavailable",
+      "description": "We can't reach the service right now. It may be undergoing maintenance or there's a temporary connection issue.",
+      "retry": "Try again",
+      "checking": "Checking connection...",
+      "hint": "This page will refresh automatically as soon as the service is back."
     }
   },
   "merge": {
