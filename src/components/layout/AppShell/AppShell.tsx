@@ -191,9 +191,17 @@ export function AppShell({ children }: AppShellProps) {
 
       {/* Desktop Header */}
       <header className="fixed left-0 right-0 top-0 z-50 hidden border-b border-dark-800/50 bg-dark-950/95 lg:block">
-        <div className="mx-auto flex h-14 max-w-[1600px] items-center gap-5 px-6">
+        {/* 3-зонный grid: лого | капсула | действия. Колонки 1fr_auto_1fr держат
+            капсулу строго по центру вьюпорта НЕЗАВИСИМО от ширины лого/действий,
+            а действия — у правого края. Поэтому ничего не «скачет» при переходах
+            (в т.ч. в админку): смена ширины в одной зоне не двигает другие. */}
+        <div className="mx-auto grid h-14 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-6">
           {/* Logo */}
-          <Link to="/" className="flex shrink-0 items-center gap-2.5" onClick={handleNavClick}>
+          <Link
+            to="/"
+            className="flex shrink-0 items-center gap-2.5 justify-self-start"
+            onClick={handleNavClick}
+          >
             <div className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-dark-800">
               <span
                 className={cn(
@@ -218,9 +226,9 @@ export function AppShell({ children }: AppShellProps) {
           </Link>
 
           {/* Navigation — единая «капсула» (segmented control): все пункты видны
-              всегда, без скролла/сжатия/сворачивания. Капсула центрируется в
-              свободном пространстве между логотипом и кнопками (mx-auto). */}
-          <nav className="mx-auto flex items-center gap-0.5 rounded-full border border-dark-800/70 bg-dark-900/50 p-1 shadow-sm backdrop-blur-sm">
+              всегда, без скролла/сжатия/сворачивания. Центрируется средней
+              колонкой grid (justify-self-center), а не auto-margin'ами. */}
+          <nav className="flex items-center gap-0.5 justify-self-center rounded-full border border-dark-800/70 bg-dark-900/50 p-1 shadow-sm backdrop-blur-sm">
             {desktopNav.map((item) => renderNavLink(item.path, item.label, item.icon))}
             {isAdmin && (
               <>
@@ -230,8 +238,8 @@ export function AppShell({ children }: AppShellProps) {
             )}
           </nav>
 
-          {/* Right side actions — pinned right (nav centers via mx-auto), never shrink */}
-          <div className="flex shrink-0 items-center gap-2">
+          {/* Right side actions — правая колонка grid, прижата к краю, не сжимается */}
+          <div className="flex shrink-0 items-center gap-2 justify-self-end">
             <button
               onClick={() => {
                 haptic.impact('light');
