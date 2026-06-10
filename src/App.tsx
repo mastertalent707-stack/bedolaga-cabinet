@@ -135,7 +135,6 @@ const AdminBroadcastDetail = lazyWithRetry(() => import('./pages/AdminBroadcastD
 const AdminPinnedMessages = lazyWithRetry(() => import('./pages/AdminPinnedMessages'));
 const AdminPinnedMessageCreate = lazyWithRetry(() => import('./pages/AdminPinnedMessageCreate'));
 const AdminChannelSubscriptions = lazyWithRetry(() => import('./pages/AdminChannelSubscriptions'));
-const AdminEmailTemplatePreview = lazyWithRetry(() => import('./pages/AdminEmailTemplatePreview'));
 const AdminRoles = lazyWithRetry(() => import('./pages/AdminRoles'));
 const AdminRoleEdit = lazyWithRetry(() => import('./pages/AdminRoleEdit'));
 const AdminRoleAssign = lazyWithRetry(() => import('./pages/AdminRoleAssign'));
@@ -1212,17 +1211,6 @@ function App() {
             </PermissionRoute>
           }
         />
-        <Route
-          path="/admin/email-templates/preview/:type/:lang"
-          element={
-            <PermissionRoute permission="email_templates:read">
-              <LazyPage>
-                <AdminEmailTemplatePreview />
-              </LazyPage>
-            </PermissionRoute>
-          }
-        />
-
         {/* RBAC routes */}
         <Route
           path="/admin/roles"

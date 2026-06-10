@@ -1455,9 +1455,13 @@
       "resetted": "模板已恢复默认",
       "testSent": "测试邮件已发送",
       "variables": "可用变量",
-      "clickToCopy": "点击复制",
-      "previewDesktopOnly": "预览仅在桌面网页版可用",
-      "previewNotAvailable": "预览不可用"
+      "editorTab": "编辑器",
+      "previewHint": "预览以示例值代替变量显示邮件。",
+      "clickToInsert": "点击插入到文本中",
+      "insertDefault": "插入默认模板",
+      "insertDefaultConfirm": "用默认模板替换当前内容？",
+      "testRecipientPlaceholder": "收件人邮箱（默认为您的邮箱）",
+      "testHint": "发送当前编辑器内容，变量将替换为示例值。"
     },
     "payments": {
       "title": "支付",

@@ -52,6 +52,9 @@ export interface EmailTemplatePreviewResponse {
 export interface EmailTemplateSendTestRequest {
   language: string;
   email?: string;
+  /** Current editor content — when set, the test sends it instead of the saved template */
+  subject?: string;
+  body_html?: string;
 }
 
 export const adminEmailTemplatesApi = {

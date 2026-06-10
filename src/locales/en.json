@@ -1541,9 +1541,13 @@
       "resetted": "Template reset to default",
       "testSent": "Test email sent",
       "variables": "Available Variables",
-      "clickToCopy": "Click to copy",
-      "previewDesktopOnly": "Preview is only available in the desktop web version",
-      "previewNotAvailable": "Preview not available"
+      "editorTab": "Editor",
+      "previewHint": "The preview shows the email with sample values in place of variables.",
+      "clickToInsert": "Click to insert into the text",
+      "insertDefault": "Insert default template",
+      "insertDefaultConfirm": "Replace the current content with the default template?",
+      "testRecipientPlaceholder": "Recipient email (defaults to yours)",
+      "testHint": "Sends the current editor content with sample values in place of variables."
     },
     "payments": {
       "title": "Payments",
