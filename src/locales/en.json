@@ -2000,6 +2000,8 @@
       "quickToggles": "Quick Toggles",
       "modified": "Modified",
       "readOnly": "Read only",
+      "envLocked": "Set in .env",
+      "envLockedHint": "This value is set in the .env file and overrides the database, so it can't be changed here. To manage it from the cabinet, remove the key from .env and restart the bot.",
       "badgeDb": "DB",
       "badgeEnv": "ENV",
       "reset": "Reset",

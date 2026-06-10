@@ -1745,6 +1745,8 @@
       "quickToggles": "快速开关",
       "modified": "已修改",
       "readOnly": "只读",
+      "envLocked": "在 .env 中设置",
+      "envLockedHint": "该值在 .env 文件中设置并覆盖数据库,因此无法在此处更改。若要从面板管理此设置,请从 .env 中删除该键并重启机器人。",
       "reset": "重置",
       "categoriesCount": "个分类",
       "settingsCount": "个设置",
