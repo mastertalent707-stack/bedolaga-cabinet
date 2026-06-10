@@ -362,24 +362,47 @@ function TemplateEditor({
             />
           </div>
 
-          {/* Context variables hint */}
-          {detail.context_vars.length > 0 && (
-            <div className="rounded-lg border border-dark-700 bg-dark-900/60 p-2.5 sm:p-3">
-              <p className="mb-1.5 text-xs font-medium text-dark-300">
-                {t('admin.emailTemplates.variables')}
-              </p>
-              <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                {detail.context_vars.map((v) => (
-                  <code
-                    key={v}
-                    className="cursor-pointer rounded bg-dark-700 px-2 py-0.5 font-mono text-xs text-accent-400 transition-colors hover:bg-dark-600"
-                    title={t('admin.emailTemplates.clickToInsert')}
-                    onClick={() => insertVariable(v)}
-                  >
-                    {`{${v}}`}
-                  </code>
-                ))}
-              </div>
+          {/* Context variables hint: type-specific + common (available in all templates) */}
+          {(detail.context_vars.length > 0 || (detail.common_context_vars?.length ?? 0) > 0) && (
+            <div className="space-y-2.5 rounded-lg border border-dark-700 bg-dark-900/60 p-2.5 sm:p-3">
+              {detail.context_vars.length > 0 && (
+                <div>
+                  <p className="mb-1.5 text-xs font-medium text-dark-300">
+                    {t('admin.emailTemplates.variables')}
+                  </p>
+                  <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                    {detail.context_vars.map((v) => (
+                      <code
+                        key={v}
+                        className="cursor-pointer rounded bg-dark-700 px-2 py-0.5 font-mono text-xs text-accent-400 transition-colors hover:bg-dark-600"
+                        title={t('admin.emailTemplates.clickToInsert')}
+                        onClick={() => insertVariable(v)}
+                      >
+                        {`{${v}}`}
+                      </code>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {(detail.common_context_vars?.length ?? 0) > 0 && (
+                <div>
+                  <p className="mb-1.5 text-xs font-medium text-dark-400">
+                    {t('admin.emailTemplates.variablesCommon')}
+                  </p>
+                  <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                    {detail.common_context_vars!.map((v) => (
+                      <code
+                        key={v}
+                        className="cursor-pointer rounded bg-dark-800 px-2 py-0.5 font-mono text-xs text-dark-300 ring-1 ring-dark-600 transition-colors hover:bg-dark-700 hover:text-accent-400"
+                        title={t('admin.emailTemplates.clickToInsert')}
+                        onClick={() => insertVariable(v)}
+                      >
+                        {`{${v}}`}
+                      </code>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

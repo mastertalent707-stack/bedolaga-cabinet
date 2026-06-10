@@ -1547,7 +1547,8 @@
       "insertDefault": "Insert default template",
       "insertDefaultConfirm": "Replace the current content with the default template?",
       "testRecipientPlaceholder": "Recipient email (defaults to yours)",
-      "testHint": "Sends the current editor content with sample values in place of variables."
+      "testHint": "Sends the current editor content with sample values in place of variables.",
+      "variablesCommon": "Common variables (work in all templates)"
     },
     "payments": {
       "title": "Payments",

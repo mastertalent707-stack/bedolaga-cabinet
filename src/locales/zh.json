@@ -1461,7 +1461,8 @@
       "insertDefault": "插入默认模板",
       "insertDefaultConfirm": "用默认模板替换当前内容？",
       "testRecipientPlaceholder": "收件人邮箱（默认为您的邮箱）",
-      "testHint": "发送当前编辑器内容，变量将替换为示例值。"
+      "testHint": "发送当前编辑器内容，变量将替换为示例值。",
+      "variablesCommon": "通用变量（适用于所有模板）"
     },
     "payments": {
       "title": "支付",
