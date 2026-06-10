@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -194,8 +194,11 @@ export default function TopUpResult() {
   // Load saved payment info from sessionStorage (once on mount)
   const [pendingInfo] = useState(() => loadTopUpPendingInfo());
 
-  // Fallback: read method from query params (for external browser redirects where sessionStorage is unavailable)
-  const methodFromUrl = searchParams.get('method');
+  // Fallback: read method for external-browser redirects where sessionStorage is unavailable.
+  // Providers that reject query strings (Lava) return to /balance/top-up/result/<method>, so
+  // accept the method from the path param too, not just ?method=.
+  const { method: methodFromPath } = useParams<{ method?: string }>();
+  const methodFromUrl = searchParams.get('method') || methodFromPath || null;
 
   // Detect if user arrived via redirect with success param (no polling needed)
   const redirectStatus = searchParams.get('status') || searchParams.get('payment');
