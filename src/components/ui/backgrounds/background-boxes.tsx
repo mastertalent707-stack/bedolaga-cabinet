@@ -51,8 +51,11 @@ export default React.memo(function BackgroundBoxes({ settings }: Props) {
   const rows = clampNumber(settings.rows, 4, 30, 15);
   const cols = clampNumber(settings.cols, 4, 30, 15);
   const boxColor = sanitizeColor(settings.boxColor, '#818cf8');
-  const lineColor = sanitizeColor(settings.lineColor, 'rgba(51,65,85,0.5)');
-  const multicolor = safeBoolean(settings.multicolor, true);
+  const lineColor = sanitizeColor(settings.lineColor, '#334155');
+  const multicolor =
+    settings.multicolor === undefined
+      ? boxColor === '#818cf8'
+      : safeBoolean(settings.multicolor, true);
 
   const cells = useMemo((): CellData[] => {
     return Array.from({ length: rows * cols }, () => ({
@@ -131,6 +134,7 @@ export default React.memo(function BackgroundBoxes({ settings }: Props) {
         ctx.fillRect(ox + col * cellW, oy + row * cellH, cellW, cellH);
       }
 
+      ctx.globalAlpha = 0.5;
       ctx.strokeStyle = lineColor;
       ctx.lineWidth = 1;
       ctx.beginPath();

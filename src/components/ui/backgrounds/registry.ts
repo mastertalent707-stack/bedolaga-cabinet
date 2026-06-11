@@ -434,7 +434,7 @@ export const backgroundRegistry: BackgroundDefinition[] = [
         key: 'lineColor',
         label: 'admin.backgrounds.lineColor',
         type: 'color',
-        default: 'rgba(51,65,85,0.5)',
+        default: '#334155',
       },
     ],
   },

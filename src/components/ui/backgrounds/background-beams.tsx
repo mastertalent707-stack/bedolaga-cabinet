@@ -102,6 +102,9 @@ function ensureStyles() {
 
 export default React.memo(function BackgroundBeams({ settings }: Props) {
   const paused = useAnimationPause();
+  const uid = React.useId();
+  const beamGradientId = `beamGradient-${uid}`;
+  const radialGradientId = `beamsRadial-${uid}`;
 
   const gradientStart = sanitizeColor(settings.gradientStart, '#18CCFC');
   const gradientMid = sanitizeColor(settings.gradientMid, '#6344F5');
@@ -124,7 +127,7 @@ export default React.memo(function BackgroundBeams({ settings }: Props) {
       >
         <path
           d={bgPath}
-          stroke="url(#paint0_radial_beams)"
+          stroke={`url(#${radialGradientId})`}
           strokeOpacity="0.05"
           strokeWidth="0.5"
         />
@@ -133,7 +136,7 @@ export default React.memo(function BackgroundBeams({ settings }: Props) {
           <path
             key={paramIndex}
             d={path}
-            stroke="url(#beamGradient)"
+            stroke={`url(#${beamGradientId})`}
             strokeWidth="0.5"
             strokeOpacity="0.4"
             pathLength={1}
@@ -147,7 +150,7 @@ export default React.memo(function BackgroundBeams({ settings }: Props) {
         ))}
 
         <defs>
-          <linearGradient id="beamGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id={beamGradientId} x1="0%" y1="0%" x2="100%" y2="100%">
             <stop stopColor={gradientStart} stopOpacity="0" />
             <stop offset="10%" stopColor={gradientStart} />
             <stop offset="50%" stopColor={gradientMid} />
@@ -155,7 +158,7 @@ export default React.memo(function BackgroundBeams({ settings }: Props) {
           </linearGradient>
 
           <radialGradient
-            id="paint0_radial_beams"
+            id={radialGradientId}
             cx="0"
             cy="0"
             r="1"
