@@ -15,13 +15,9 @@ const SPEED_DURATIONS: Record<string, string> = {
 };
 
 export default function AuroraBackground({ settings }: Props) {
-  const isLegacySeed =
-    settings.firstColor === '#00d2ff' &&
-    settings.secondColor === '#7928ca' &&
-    settings.thirdColor === '#ff0080';
-  const firstColor = isLegacySeed ? '#3b82f6' : sanitizeColor(settings.firstColor, '#3b82f6');
-  const secondColor = isLegacySeed ? '#a5b4fc' : sanitizeColor(settings.secondColor, '#a5b4fc');
-  const thirdColor = isLegacySeed ? '#93c5fd' : sanitizeColor(settings.thirdColor, '#93c5fd');
+  const firstColor = sanitizeColor(settings.firstColor, '#3b82f6');
+  const secondColor = sanitizeColor(settings.secondColor, '#a5b4fc');
+  const thirdColor = sanitizeColor(settings.thirdColor, '#93c5fd');
   const speed = safeSelect(settings.speed, ['slow', 'normal', 'fast'] as const, 'normal');
   const showRadialGradient = safeBoolean(settings.showRadialGradient, true);
   const paused = useAnimationPause();

@@ -521,7 +521,14 @@ function FaqEditor({ onDirtyChange }: { onDirtyChange: (dirty: boolean) => void 
   const reorderMutation = useMutation({
     mutationFn: async ({ a, b }: { a: FaqPageItem; b: FaqPageItem }) => {
       await adminLegalPagesApi.updateFaqPage(a.id, { display_order: b.display_order });
-      await adminLegalPagesApi.updateFaqPage(b.id, { display_order: a.display_order });
+      try {
+        await adminLegalPagesApi.updateFaqPage(b.id, { display_order: a.display_order });
+      } catch (err) {
+        await adminLegalPagesApi
+          .updateFaqPage(a.id, { display_order: a.display_order })
+          .catch(() => {});
+        throw err;
+      }
     },
     onSuccess: () => {
       haptic.success();

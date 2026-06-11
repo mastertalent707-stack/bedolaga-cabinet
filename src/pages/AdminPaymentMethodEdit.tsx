@@ -383,7 +383,9 @@ export default function AdminPaymentMethodEdit() {
           {quickAmountsError && <p className="mt-1 text-xs text-error-400">{quickAmountsError}</p>}
           <p className="mt-1 text-xs text-dark-500">
             {t('admin.paymentMethods.quickAmountsHint', {
-              defaults: config.default_quick_amounts.map((kopeks) => kopeks / 100).join(', '),
+              defaults: (config.default_quick_amounts ?? [])
+                .map((kopeks) => kopeks / 100)
+                .join(', '),
             })}
           </p>
         </div>
