@@ -1045,7 +1045,8 @@
     "openSupport": "Open Support",
     "contactSupport": "Please contact {{username}} for support",
     "contactUs": "Contact Support",
-    "create_ticket": "Create ticket"
+    "create_ticket": "Create ticket",
+    "writeButton": "Message"
   },
   "wheel": {
     "title": "Fortune Wheel",
@@ -5242,7 +5243,7 @@
   },
   "subscriptions": {
     "buy": "Buy subscription",
-    "buyAnother": "Buy another subscription",
+    "buyAnother": "Buy another",
     "browsePlans": "View plans and subscribe",
     "empty": "You have no subscriptions yet",
     "emptyDesc": "Choose a tariff to get started",

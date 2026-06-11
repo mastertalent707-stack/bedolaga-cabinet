@@ -109,15 +109,15 @@ export default function Subscriptions() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold" style={{ color: g.text }}>
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="truncate text-xl font-bold" style={{ color: g.text }}>
           {t('subscriptions.title', 'Мои подписки')}
         </h1>
         {/* «+ Купить ещё» — только если уже есть платная активная подписка */}
         {!isLoading && hasActivePaid && (
           <button
             onClick={() => navigate('/subscription/purchase')}
-            className="flex items-center gap-1.5 rounded-xl px-4 py-2 text-sm font-medium transition-colors"
+            className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl px-4 py-2 text-sm font-medium transition-colors"
             style={{
               background: 'rgba(var(--color-accent-400), 0.1)',
               color: 'rgb(var(--color-accent-400))',

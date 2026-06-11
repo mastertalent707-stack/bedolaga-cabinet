@@ -110,7 +110,10 @@ function onColorFor(bgTriplet: string): string {
 }
 
 // Apply theme colors as CSS variables (RGB format for Tailwind opacity support)
-export function applyThemeColors(colors: ThemeColors): void {
+export function applyThemeColors(themeColors: ThemeColors): void {
+  // Частичный/битый ответ /branding/colors раньше ронял ВСЁ приложение в
+  // ErrorBoundary (hexToRgb(undefined)). Недостающие поля добиваем дефолтами.
+  const colors: ThemeColors = { ...DEFAULT_THEME_COLORS, ...themeColors };
   const root = document.documentElement;
 
   // Generate palettes from status colors
