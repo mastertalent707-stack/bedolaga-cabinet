@@ -632,6 +632,19 @@ function App() {
             </PermissionRoute>
           }
         />
+        {/* Deep-link target for admin ticket notification buttons (bot issue #2988):
+            opens a specific ticket directly. Static "/settings" above out-ranks
+            this dynamic segment in react-router, so there is no conflict. */}
+        <Route
+          path="/admin/tickets/:ticketId"
+          element={
+            <PermissionRoute permission="tickets:read">
+              <LazyPage>
+                <AdminTickets />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
         <Route
           path="/admin/settings"
           element={
