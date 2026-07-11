@@ -1,14 +1,14 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.5.3/schema.json",
   "files": {
-    "includes": ["**", "!dist", "!node_modules", "!public", "!package-lock.json", "!**/*.css"]
+    "includes": ["**", "!dist", "!node_modules", "!public", "!package-lock.json"]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineWidth": 100,
-    "lineEnding": "lf"
+    "lineEnding": "auto"
   },
   "javascript": {
     "formatter": {
@@ -48,5 +48,18 @@
   "assist": {
     "enabled": false
   },
-  "plugins": ["./biome-plugins/telegram-webview-guards.grit"]
+  "plugins": ["./biome-plugins/telegram-webview-guards.grit"],
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "enabled": false
+      }
+    }
+  ]
 }
