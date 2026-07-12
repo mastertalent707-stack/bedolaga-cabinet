@@ -20,6 +20,62 @@ const DISPLAY_MODES: LegalDisplayMode[] = ['bot', 'web', 'both'];
 
 type DocumentKind = 'privacy-policy' | 'public-offer' | 'recurrent-payments';
 
+// Bot chunk/page size (split_telegram_text max_length): longer texts are
+// delivered by the bot in several messages / paginated pages
+const TELEGRAM_SPLIT_THRESHOLD = 3500;
+
+// Mirrors the bot's split_telegram_text greedy paragraph packing to estimate
+// how many messages/pages the bot will produce for this text
+function estimateTelegramParts(text: string): number {
+  const normalized = text.replace(/\r\n/g, '\n').trim();
+  if (!normalized) return 0;
+  if (normalized.length <= TELEGRAM_SPLIT_THRESHOLD) return 1;
+  const paragraphs = normalized.split('\n\n').filter((p) => p.trim());
+  let parts = 0;
+  let current = '';
+  for (const paragraph of paragraphs) {
+    const candidate = current ? `${current}\n\n${paragraph}` : paragraph;
+    if (candidate.length <= TELEGRAM_SPLIT_THRESHOLD) {
+      current = candidate;
+      continue;
+    }
+    if (current) {
+      parts += 1;
+      current = '';
+    }
+    if (paragraph.length <= TELEGRAM_SPLIT_THRESHOLD) {
+      current = paragraph;
+    } else {
+      parts += Math.ceil(paragraph.length / TELEGRAM_SPLIT_THRESHOLD);
+    }
+  }
+  if (current) parts += 1;
+  return parts;
+}
+
+function ContentLengthMeta({ text, botVisible }: { text: string; botVisible: boolean }) {
+  const { t } = useTranslation();
+  const parts = botVisible ? estimateTelegramParts(text) : 0;
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+      <span className="text-dark-500">
+        {t('admin.legalPages.charCount', {
+          count: text.length,
+          defaultValue: 'Characters: {{count}}',
+        })}
+      </span>
+      {parts > 1 && (
+        <span className="text-warning-400">
+          {t('admin.legalPages.botSplitEstimate', {
+            count: parts,
+            defaultValue: '⚠️ The bot will show it split into ~{{count}} messages',
+          })}
+        </span>
+      )}
+    </div>
+  );
+}
+
 const DOCUMENT_API: Record<
   DocumentKind,
   {
@@ -236,6 +292,10 @@ function DocumentEditor({
           className="input min-h-[320px] w-full font-mono text-sm"
           placeholder={t('admin.legalPages.contentPlaceholder')}
         />
+        <ContentLengthMeta
+          text={contents[activeLang] ?? ''}
+          botVisible={kind !== 'recurrent-payments' && displayMode !== 'web'}
+        />
       </div>
       {saveError && <p className="text-sm text-error-400">{saveError}</p>}
       <button
@@ -336,6 +396,7 @@ function RulesEditor({ onDirtyChange }: { onDirtyChange: (dirty: boolean) => voi
           className="input min-h-[320px] w-full font-mono text-sm"
           placeholder={t('admin.legalPages.contentPlaceholder')}
         />
+        <ContentLengthMeta text={contents[activeLang] ?? ''} botVisible={displayMode !== 'web'} />
       </div>
       {saveError && <p className="text-sm text-error-400">{saveError}</p>}
       <button
